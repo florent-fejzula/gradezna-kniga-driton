@@ -1,0 +1,67 @@
+<div class="buttons">
+  <button class="button print" (click)="printThisPage()">Print</button>
+  <button class="invisible"></button>
+</div>
+
+<div class="wrapper">
+  <div class="top_part">
+    <div class="row">
+      <div class="column kniga"><b>ГРАДЕЖНА КНИГА</b></div>
+      <div class="column wide">
+        <div class="gradba">
+            <div>градба:</div>
+            <input matInput [(ngModel)]="gradbaInputValue" />
+        </div>
+        <div class="izveduvac">
+          <div>изведувач:</div>
+          <input matInput [(ngModel)]="izveduvacInputValue" />
+        </div>
+      </div>
+      <div class="column datum">
+        <div class="gradba">
+          <div>книга бр.</div>
+          <input matInput [(ngModel)]="knigaInputValue" class="knigaInput"/>
+        </div>
+        <div class="izveduvac">
+          <div>ден / датум:</div>
+          <input matInput [(ngModel)]="datumInputValue" class="datumInput"/>
+        </div>
+      </div>
+    </div>
+    <div class="row rowMid">
+      <div class="investor">инвестор</div>
+      <div class="investor_blank">
+        <input matInput [(ngModel)]="investorInputValue"/>
+      </div>
+    </div>
+    <div class="row rowMid">
+      <div class="adresa">адреса и назив на градилиште</div>
+      <div class="adresa_blank">
+        <input matInput [(ngModel)]="adresaInputValue"/>
+      </div>
+    </div>
+    <div class="row">
+      <div class="pozicija">
+        ГРАДЕЖНА ПОЗИЦИЈА:
+        <input matInput [(ngModel)]="pozicijaInputValue"/>
+      </div>
+      <div class="merka">
+        мерка
+        <input matInput [(ngModel)]="merkaInputValue"/>
+      </div>
+      <div class="cena">
+        цена
+        <input matInput [(ngModel)]="cenaInputValue"/>
+      </div>
+    </div>
+  </div>
+  <div class="mid_table"></div>
+  <div class="bottom_part">
+    <div class="zaPrenosVkupno"></div>
+    <div class="fullBottom">
+      <div class="fullBottomIzveduvac">изведувач:</div>
+      <div class="fullBottomInzener">надзорниот инженер</div>
+    </div>
+  </div>
+</div>
+<div class="pageEnd"></div>
