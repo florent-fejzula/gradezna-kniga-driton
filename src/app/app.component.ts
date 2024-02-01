@@ -15,6 +15,25 @@ export class AppComponent {
   pozicijaInputValue: string = '';
   merkaInputValue: string = '';
   cenaInputValue: number | undefined;
+  redenBrojArea: string = '';
+  textAreaInput: string = '';
+  kolicinaArea: string = '';
+  merkaArea: string = '';
+  cenaArea: string = '';
+  vkupnoArea: string = '';
+  div2InputValue: string = '';
+  div3InputValue: string = '';
+  div4InputValue: string = '';
+
+  yourDataSource = [
+    { quantity: 1, unit: 'm1', price: 10, total: 10 },
+    { quantity: 2, unit: 'kom', price: 5, total: 10 },
+    // Add more data as needed
+  ];
+
+  addRow() {
+
+  }
 
   printThisPage() {
     window.print();

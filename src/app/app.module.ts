@@ -7,6 +7,8 @@ import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatTableModule } from '@angular/material/table';
+// import { CdkTextareaAutosizeModule } from '@angular/cdk/textarea';
 
 @NgModule({
   declarations: [
@@ -18,7 +20,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
     FormsModule,
     NoopAnimationsModule,
     MatInputModule,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatTableModule
   ],
   providers: [],
   bootstrap: [AppComponent]

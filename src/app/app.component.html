@@ -14,7 +14,8 @@
         </div>
         <div class="izveduvac">
           <div>изведувач:</div>
-          <input matInput [(ngModel)]="izveduvacInputValue" />
+          <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2>
+          <!-- <input matInput [(ngModel)]="izveduvacInputValue" /> -->
         </div>
       </div>
       <div class="column datum">
@@ -54,10 +55,38 @@
         <input matInput [(ngModel)]="cenaInputValue"/>
       </div>
     </div>
+    <!-- <button mat-button class="add-button" (click)="addRow()">Add</button> -->
+    <table>
+      <thead>
+        <tr class="headerRow">
+          <th class="tRedenBroj">Реден број</th>
+          <th class="tSostav"></th>
+          <th class="tKolicina">количина</th>
+          <th class="tMerka">мерка</th>
+          <th class="tCena">цена</th>
+          <th class="tVkupno">вкупно</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="redenBrojArea" class="redenBrojArea"></textarea></td>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="textAreaInput" class="textArea"></textarea></td>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="kolicinaArea" class="kolicinaArea"></textarea></td>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="merkaArea" class="merkaArea"></textarea></td>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="cenaArea" class="cenaArea"></textarea></td>
+          <td><textarea cdkTextareaAutosize [(ngModel)]="vkupnoArea" class="vkupnoArea"></textarea></td>
+        </tr>
+      </tbody>
+    </table>
   </div>
-  <div class="mid_table"></div>
   <div class="bottom_part">
-    <div class="zaPrenosVkupno"></div>
+    <div class="prenos">
+      <div class="div1">за пренос / вкупно = </div>
+      <div class="div2"><input matInput [(ngModel)]="div2InputValue"/></div>
+      <div class="div3"><input matInput [(ngModel)]="div3InputValue"/></div>
+      <div class="div4"><input matInput [(ngModel)]="div4InputValue"/></div>
+    </div>
+
     <div class="fullBottom">
       <div class="fullBottomIzveduvac">изведувач:</div>
       <div class="fullBottomInzener">надзорниот инженер</div>

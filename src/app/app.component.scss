@@ -93,7 +93,7 @@
 }
 
 .datum {
-  width: 184px;
+  width: 260px;
 }
 
 .gradba,
@@ -110,7 +110,7 @@
 
 .investor,
 .adresa {
-  min-width: 233px;
+  min-width: 205px;
   padding-left: 6px;
 }
 .investor_blank,
@@ -132,6 +132,14 @@
     height: 33px;
     text-align: center;
   }
+}
+
+.add-button {
+  width: 100px;
+}
+
+.izveduvacTitle {
+  margin: auto;
 }
 
 .investor_blank,
@@ -215,9 +223,121 @@
   height: 30px;
 }
 
+table {
+  width: 100%;
+  border-collapse: collapse;
+
+  th {
+    border: 1px solid black;
+    padding: 6px;
+    text-align: center;
+  }
+
+  td {
+    padding: 6px;
+    text-align: center;
+    border-right: 1px solid black;
+    page-break-inside: avoid;
+    vertical-align: top;
+  }
+
+  td:nth-child(2) {
+    width: 560px;
+    text-align: left;
+    padding-left: 20px;
+    height: 66vh;
+  }
+
+  .redenBrojArea {
+    width: 20px;
+  }
+ 
+
+  textArea {
+    width: 100%;
+    font-size: 20px;
+    overflow-y: hidden;
+    min-height: 40px;
+    page-break-inside: avoid;
+    padding-bottom: 10px;
+    font-weight: bold;
+  }
+}
+
+.tRedenBroj {
+  width: 20px;
+}
+
+.tKolicina,
+.tMerka {
+  width: 50px;
+}
+
+.tCena {
+  width: 70px;
+}
+
+.tVkupno {
+  width: 100px;
+}
+
+.kolicinaArea,
+.merkaArea,
+.cenaArea,
+.vkupnoArea {
+  text-align: center;
+}
+
+.prenos {
+  border: 1px solid black;
+  height: 44px;
+  display: flex;
+
+  input {
+    height: 30px;
+    font-size: 16px;
+    margin: 4px 4px;
+    width: 92px;
+  }
+
+  .div1 {
+    border: 1px solid black;
+    justify-content: end;
+    width: 650px;
+    display: flex;
+    align-items: center;
+    padding-right: 12px;
+  }
+
+  .div2 {
+    border: 1px solid black;
+
+    input {
+      text-align: center;
+    }
+  }
+
+  .div3 {
+    border: 1px solid black;
+
+    input {
+      text-align: center;
+    }
+  }
+
+  .div4 {
+    border: 1px solid black;
+
+    input {
+      text-align: center;
+    }
+  }
+}
+
 @media print {
   .buttons,
-  .pageEnd {
+  .pageEnd,
+  .add-button {
     display: none;
   }
 
@@ -227,7 +347,15 @@
   .adresa_blank input,
   .pozicija input,
   .merka input,
-  .cena input {
+  .cena input,
+  textArea,
+  .div2 input,
+  .div3 input,
+  .div4 input {
     border: none;
+  }
+
+  textArea {
+    resize: none;
   }
 }
