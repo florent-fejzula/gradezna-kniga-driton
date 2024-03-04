@@ -35,6 +35,14 @@
     background-color: #008f07;
   }
 
+  .export {
+    background-color: #b61b00;
+  }
+
+  .export:hover {
+    background-color: #8d1601;
+  }
+
   .invisible {
     visibility: hidden;
     width: 110px;
@@ -85,7 +93,7 @@
 
 .knigaInput,
 .datumInput {
-  width: 90px !important;
+  width: 116px !important;
 }
 
 .wide {
@@ -249,7 +257,7 @@ table {
   }
 
   .redenBrojArea {
-    width: 20px;
+    width: 32px;
   }
  
 

@@ -1,5 +1,11 @@
 <div class="buttons">
   <button class="button print" (click)="printThisPage()">Print</button>
+  <button class="button export" (click)="exportToJson()">Export</button>
+  <input type="file" (change)="importJson($event)" style="display: none;" #fileInput />
+  <button class="button export" (click)="fileInput.click()">Import</button>
+  <button class="button edit" (click)="increaseFontSize()">Font +</button>
+  <button class="button edit" (click)="decreaseFontSize()">Font -</button>
+  <button class="invisible"></button>
   <button class="invisible"></button>
 </div>
 
@@ -9,53 +15,52 @@
       <div class="column kniga"><b>ГРАДЕЖНА КНИГА</b></div>
       <div class="column wide">
         <div class="gradba">
-            <div>градба:</div>
-            <input matInput [(ngModel)]="gradbaInputValue" />
+          <div>градба:</div>
+          <input matInput [(ngModel)]="gradbaInputValue" />
         </div>
         <div class="izveduvac">
           <div>изведувач:</div>
           <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2>
-          <!-- <input matInput [(ngModel)]="izveduvacInputValue" /> -->
+          <!-- <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2> -->
         </div>
       </div>
       <div class="column datum">
         <div class="gradba">
           <div>книга бр.</div>
-          <input matInput [(ngModel)]="knigaInputValue" class="knigaInput"/>
+          <input matInput [(ngModel)]="knigaInputValue" class="knigaInput" />
         </div>
         <div class="izveduvac">
           <div>ден / датум:</div>
-          <input matInput [(ngModel)]="datumInputValue" class="datumInput"/>
+          <input matInput [(ngModel)]="datumInputValue" class="datumInput" />
         </div>
       </div>
     </div>
     <div class="row rowMid">
       <div class="investor">инвестор</div>
       <div class="investor_blank">
-        <input matInput [(ngModel)]="investorInputValue"/>
+        <input matInput [(ngModel)]="investorInputValue" />
       </div>
     </div>
     <div class="row rowMid">
       <div class="adresa">адреса и назив на градилиште</div>
       <div class="adresa_blank">
-        <input matInput [(ngModel)]="adresaInputValue"/>
+        <input matInput [(ngModel)]="adresaInputValue" />
       </div>
     </div>
     <div class="row">
       <div class="pozicija">
         ГРАДЕЖНА ПОЗИЦИЈА:
-        <input matInput [(ngModel)]="pozicijaInputValue"/>
+        <input matInput [(ngModel)]="pozicijaInputValue" />
       </div>
       <div class="merka">
         мерка
-        <input matInput [(ngModel)]="merkaInputValue"/>
+        <input matInput [(ngModel)]="merkaInputValue" />
       </div>
       <div class="cena">
         цена
-        <input matInput [(ngModel)]="cenaInputValue"/>
+        <input matInput [(ngModel)]="cenaInputValue" />
       </div>
     </div>
-    <!-- <button mat-button class="add-button" (click)="addRow()">Add</button> -->
     <table>
       <thead>
         <tr class="headerRow">
@@ -69,22 +74,64 @@
       </thead>
       <tbody>
         <tr>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="redenBrojArea" class="redenBrojArea"></textarea></td>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="textAreaInput" class="textArea"></textarea></td>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="kolicinaArea" class="kolicinaArea"></textarea></td>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="merkaArea" class="merkaArea"></textarea></td>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="cenaArea" class="cenaArea"></textarea></td>
-          <td><textarea cdkTextareaAutosize [(ngModel)]="vkupnoArea" class="vkupnoArea"></textarea></td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="redenBrojArea"
+              class="redenBrojArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="textAreaInput"
+              class="textArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="kolicinaArea"
+              class="kolicinaArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="merkaArea"
+              class="merkaArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="cenaArea"
+              class="cenaArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
+          <td>
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="vkupnoArea"
+              class="vkupnoArea"
+              [style.font-size.px]="fontSize"
+            ></textarea>
+          </td>
         </tr>
       </tbody>
     </table>
   </div>
   <div class="bottom_part">
     <div class="prenos">
-      <div class="div1">за пренос / вкупно = </div>
-      <div class="div2"><input matInput [(ngModel)]="div2InputValue"/></div>
-      <div class="div3"><input matInput [(ngModel)]="div3InputValue"/></div>
-      <div class="div4"><input matInput [(ngModel)]="div4InputValue"/></div>
+      <div class="div1">за пренос / вкупно =</div>
+      <div class="div2"><input matInput [(ngModel)]="div2InputValue" /></div>
+      <div class="div3"><input matInput [(ngModel)]="div3InputValue" /></div>
+      <div class="div4"><input matInput [(ngModel)]="div4InputValue" /></div>
     </div>
 
     <div class="fullBottom">
