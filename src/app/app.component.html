@@ -1,7 +1,12 @@
 <div class="buttons">
   <button class="button print" (click)="printThisPage()">Print</button>
   <button class="button export" (click)="exportToJson()">Export</button>
-  <input type="file" (change)="importJson($event)" style="display: none;" #fileInput />
+  <input
+    type="file"
+    (change)="importJson($event)"
+    style="display: none"
+    #fileInput
+  />
   <button class="button export" (click)="fileInput.click()">Import</button>
   <button class="button edit" (click)="increaseFontSize()">Font +</button>
   <button class="button edit" (click)="decreaseFontSize()">Font -</button>
@@ -12,7 +17,12 @@
 <div class="wrapper">
   <div class="top_part">
     <div class="row">
-      <div class="column kniga"><b>ГРАДЕЖНА КНИГА</b></div>
+      <div class="column gradbaBroj">
+        <b>ГРАДЕЖНА КНИГА</b>
+        <br>
+        <br>
+        <div>Бр. <input class="gradbaBrojInput" matInput [(ngModel)]="gradbaBroj" /></div>
+      </div>
       <div class="column wide">
         <div class="gradba">
           <div>градба:</div>
@@ -20,8 +30,8 @@
         </div>
         <div class="izveduvac">
           <div>изведувач:</div>
-          <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2>
-          <!-- <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2> -->
+          <!-- <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2> -->
+          <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2>
         </div>
       </div>
       <div class="column datum">
@@ -50,7 +60,13 @@
     <div class="row">
       <div class="pozicija">
         ГРАДЕЖНА ПОЗИЦИЈА:
-        <input matInput [(ngModel)]="pozicijaInputValue" />
+        <button (click)="increasePozicijaFontSize()">+</button>
+        <button (click)="decreasePozicijaFontSize()">-</button>
+        <textarea
+          cdkTextareaAutosize
+          [(ngModel)]="pozicijaInputValue"
+          [style.font-size.px]="fontSizePozicija"
+        ></textarea>
       </div>
       <div class="merka">
         мерка
@@ -61,7 +77,8 @@
         <input matInput [(ngModel)]="cenaInputValue" />
       </div>
     </div>
-    <table>
+    <button class="new-row-button" (click)="addNewRow()">New Row</button>
+    <table class="mainTable">
       <thead>
         <tr class="headerRow">
           <th class="tRedenBroj">Реден број</th>
@@ -73,11 +90,11 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr *ngFor="let row of tableData; let i = index">
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="redenBrojArea"
+              [(ngModel)]="row.redenBrojArea"
               class="redenBrojArea"
               [style.font-size.px]="fontSize"
             ></textarea>
@@ -85,7 +102,7 @@
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="textAreaInput"
+              [(ngModel)]="row.textAreaInput"
               class="textArea"
               [style.font-size.px]="fontSize"
             ></textarea>
@@ -93,15 +110,16 @@
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="kolicinaArea"
+              [(ngModel)]="row.kolicinaArea"
               class="kolicinaArea"
               [style.font-size.px]="fontSize"
+              (ngModelChange)="calculateVkupnoArea(row)"
             ></textarea>
           </td>
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="merkaArea"
+              [(ngModel)]="row.merkaArea"
               class="merkaArea"
               [style.font-size.px]="fontSize"
             ></textarea>
@@ -109,19 +127,24 @@
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="cenaArea"
+              [(ngModel)]="row.cenaArea"
               class="cenaArea"
               [style.font-size.px]="fontSize"
+              (ngModelChange)="calculateVkupnoArea(row)"
             ></textarea>
           </td>
           <td>
             <textarea
               cdkTextareaAutosize
-              [(ngModel)]="vkupnoArea"
+              [(ngModel)]="row.vkupnoArea"
               class="vkupnoArea"
               [style.font-size.px]="fontSize"
+              disabled
             ></textarea>
           </td>
+          <button (click)="removeRow(i)" mat-icon-button class="delete-button">
+            <mat-icon>delete</mat-icon>
+          </button>
         </tr>
       </tbody>
     </table>
@@ -129,9 +152,13 @@
   <div class="bottom_part">
     <div class="prenos">
       <div class="div1">за пренос / вкупно =</div>
-      <div class="div2"><input matInput [(ngModel)]="div2InputValue" /></div>
-      <div class="div3"><input matInput [(ngModel)]="div3InputValue" /></div>
-      <div class="div4"><input matInput [(ngModel)]="div4InputValue" /></div>
+      <div class="div4">
+        <input
+          matInput
+          [(ngModel)]="div4InputValue"
+          [disabled]="isDiv4InputDisabled"
+        />
+      </div>
     </div>
 
     <div class="fullBottom">
