@@ -13,25 +13,27 @@
   <button class="invisible"></button>
   <button class="invisible"></button>
 </div>
+<h1 class="fileName">{{ fileName }}</h1>
 
 <div class="wrapper">
   <div class="top_part">
     <div class="row">
       <div class="column gradbaBroj">
-        <b>ГРАДЕЖНА КНИГА</b>
-        <br>
-        <br>
-        <div>Бр. <input class="gradbaBrojInput" matInput [(ngModel)]="gradbaBroj" /></div>
+        <b
+          ><input
+            class="gradbaBrojInput"
+            matInput
+            [(ngModel)]="gradezhnaKnigaInput"
+        /></b>
       </div>
       <div class="column wide">
         <div class="gradba">
-          <div>градба:</div>
           <input matInput [(ngModel)]="gradbaInputValue" />
         </div>
         <div class="izveduvac">
-          <div>изведувач:</div>
+          <input matInput [(ngModel)]="izveduvacInputValue" />
           <!-- <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2> -->
-          <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2>
+          <!-- <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2> -->
         </div>
       </div>
       <div class="column datum">
@@ -45,23 +47,10 @@
         </div>
       </div>
     </div>
-    <div class="row rowMid">
-      <div class="investor">инвестор</div>
-      <div class="investor_blank">
-        <input matInput [(ngModel)]="investorInputValue" />
-      </div>
-    </div>
-    <div class="row rowMid">
-      <div class="adresa">адреса и назив на градилиште</div>
-      <div class="adresa_blank">
-        <input matInput [(ngModel)]="adresaInputValue" />
-      </div>
-    </div>
     <div class="row">
       <div class="pozicija">
-        ГРАДЕЖНА ПОЗИЦИЈА:
-        <button (click)="increasePozicijaFontSize()">+</button>
-        <button (click)="decreasePozicijaFontSize()">-</button>
+        <!-- <button (click)="increasePozicijaFontSize()">+</button>
+        <button (click)="decreasePozicijaFontSize()">-</button> -->
         <textarea
           cdkTextareaAutosize
           [(ngModel)]="pozicijaInputValue"
@@ -77,14 +66,20 @@
         <input matInput [(ngModel)]="cenaInputValue" />
       </div>
     </div>
-    <button class="new-row-button" (click)="addNewRow()">New Row</button>
+    <!-- <button class="new-row-button" (click)="addNewRow()">New Row</button> -->
     <table class="mainTable">
       <thead>
         <tr class="headerRow">
           <th class="tRedenBroj">Реден број</th>
-          <th class="tSostav"></th>
+          <th class="tSostav">
+            <textarea
+              cdkTextareaAutosize
+              [(ngModel)]="tableTitleInputValue"
+              class="tableTitleInputValue"
+            ></textarea>
+          </th>
           <th class="tKolicina">количина</th>
-          <th class="tMerka">мерка</th>
+          <!-- <th class="tMerka">мерка</th> -->
           <th class="tCena">цена</th>
           <th class="tVkupno">вкупно</th>
         </tr>
@@ -93,76 +88,86 @@
         <tr *ngFor="let row of tableData; let i = index">
           <td>
             <textarea
+              #textareaElement
               cdkTextareaAutosize
               [(ngModel)]="row.redenBrojArea"
               class="redenBrojArea"
               [style.font-size.px]="fontSize"
+              (keydown)="handleKeydown($event, i, 'redenBrojArea')"
             ></textarea>
           </td>
           <td>
             <textarea
+              #textareaElement
               cdkTextareaAutosize
               [(ngModel)]="row.textAreaInput"
               class="textArea"
               [style.font-size.px]="fontSize"
+              (keydown)="handleKeydown($event, i, 'textAreaInput')"
             ></textarea>
           </td>
           <td>
             <textarea
+              #textareaElement
               cdkTextareaAutosize
               [(ngModel)]="row.kolicinaArea"
               class="kolicinaArea"
               [style.font-size.px]="fontSize"
-              (ngModelChange)="calculateVkupnoArea(row)"
+              (keydown)="handleKeydown($event, i, 'kolicinaArea')"
             ></textarea>
           </td>
-          <td>
+          <!-- <td>
             <textarea
               cdkTextareaAutosize
               [(ngModel)]="row.merkaArea"
               class="merkaArea"
               [style.font-size.px]="fontSize"
             ></textarea>
-          </td>
+          </td> -->
           <td>
             <textarea
+              #textareaElement
               cdkTextareaAutosize
               [(ngModel)]="row.cenaArea"
               class="cenaArea"
               [style.font-size.px]="fontSize"
-              (ngModelChange)="calculateVkupnoArea(row)"
+              (keydown)="handleKeydown($event, i, 'cenaArea')"
             ></textarea>
           </td>
           <td>
             <textarea
+              #textareaElement
               cdkTextareaAutosize
               [(ngModel)]="row.vkupnoArea"
               class="vkupnoArea"
               [style.font-size.px]="fontSize"
-              disabled
+              (keydown)="handleKeydown($event, i, 'vkupnoArea')"
             ></textarea>
           </td>
-          <button (click)="removeRow(i)" mat-icon-button class="delete-button">
+          <!-- <button (click)="removeRow(i)" mat-icon-button class="delete-button">
             <mat-icon>delete</mat-icon>
-          </button>
+          </button> -->
         </tr>
       </tbody>
     </table>
   </div>
   <div class="bottom_part">
     <div class="prenos">
-      <div class="div1">за пренос / вкупно =</div>
-      <div class="div4">
+      <div class="div0">
         <input
           matInput
-          [(ngModel)]="div4InputValue"
-          [disabled]="isDiv4InputDisabled"
+          [(ngModel)]="preVkupnoInputValue"
+          class="preVkupnoInputValue"
         />
+      </div>
+      <div class="div1">вкупно =</div>
+      <div class="div4">
+        <input matInput [(ngModel)]="div4InputValue" />
       </div>
     </div>
 
     <div class="fullBottom">
-      <div class="fullBottomIzveduvac">изведувач:</div>
+      <div class="fullBottomIzveduvac">изведувач: Дритон Шерифи</div>
       <div class="fullBottomInzener">надзорниот инженер</div>
     </div>
   </div>
