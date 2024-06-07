@@ -9,7 +9,8 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "electron": "electron .",
-    "electron-build": "ng build && electron ."
+    "electron-build": "ng build && electron .",
+    "package": "electron-packager . gradezhna-kniga --icon=src/assets/electron-icon-red.ico --overwrite"
   },
   "private": true,
   "dependencies": {

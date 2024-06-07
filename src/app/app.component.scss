@@ -60,8 +60,111 @@
   margin-bottom: 8px;
 }
 
+.editPanel {
+  width: 940px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  background-color: #f3f3f3;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.toolbar-button {
+  background-color: white;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 5px 10px;
+  margin: 0 5px;
+  cursor: pointer;
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+.toolbar-button u {
+  text-decoration: underline;
+}
+
+.toolbar-button b {
+  font-weight: bold;
+}
+
+.toolbar-button:hover {
+  background-color: #e7e7e7;
+  border-color: #999;
+}
+
+.toolbar-button.red {
+  color: red;
+}
+
+.toolbar-button.blue {
+  color: blue;
+}
+
+.toolbar-button.black {
+  color: black;
+}
+
+.toolbar-button:active {
+  background-color: #d7d7d7;
+}
+
+.toolbar-button:focus {
+  outline: none;
+}
+
+.flex-spacer {
+  flex: 1;
+}
+
+.color-section {
+  display: flex;
+  align-items: center;
+  margin: 2px 10px;
+}
+
+.color-section span {
+  margin-right: 10px;
+}
+
+.custom-underline {
+  text-decoration: none; /* Remove the default underline */
+  border-bottom: 2px solid currentColor; /* Add custom underline */
+  padding-bottom: 18px; /* Adjust this value to move the underline down */
+}
+
+.editableDiv {
+  border: 1px solid #ccc; /* Always show border */
+  padding: 2px;
+  min-height: 20px; /* Ensure there's some minimum height */
+  transition: border-color 0.3s;
+  outline: none; /* Remove the default outline on focus */
+  font-family: monospace !important;
+}
+
+.editableDiv:focus {
+  border-color: #999; /* Optional: Change border color on focus */
+}
+
+hr {
+  margin-block-start: 1px !important; /* Reducing the top margin */
+  margin-block-end: 1px !important; /* Reducing the bottom margin */
+  // margin-block: 1px !important;
+  // border-bottom-width: 2px !important;
+  // border-left-width: 2px !important;
+  // font-size: 50px !important;
+  // -webkit-border-horizontal-spacing: 27px !important;
+  // height: 2px !important;
+  // color: black !important;
+  border-color: black !important;
+}
+
 .new-row-button {
-  background-color: #4caf50; /* Green */
+  background-color: #4caf50;
   border: none;
   color: white;
   width: 160px;
@@ -76,7 +179,7 @@
 }
 
 .new-row-button:hover {
-  background-color: #45a049; /* Darker Green */
+  background-color: #45a049;
 }
 
 .wrapper {
@@ -305,7 +408,7 @@ table {
   td:nth-child(2) {
     width: 560px;
     text-align: left;
-    padding-left: 20px;
+    padding-left: 8px;
   }
 
   .redenBrojArea {
@@ -410,6 +513,7 @@ textarea[disabled] {
 @media print {
   .buttons,
   .fileName,
+  .editPanel,
   .pageEnd,
   .add-button,
   .new-row-button,
@@ -431,8 +535,10 @@ textarea[disabled] {
   textArea,
   .div2 input,
   .div3 input,
+  .preVkupnoInputValue,
   .div4 input,
-  .gradbaBrojInput {
+  .gradbaBrojInput,
+  .editableDiv {
     border: none;
   }
 

@@ -1,19 +1,68 @@
 <div class="buttons">
-  <button class="button print" (click)="printThisPage()">Print</button>
-  <button class="button export" (click)="exportToJson()">Export</button>
+  <button class="button print" (click)="saveAsPDF()">Save PDF (color)</button>
+  <button class="button print" (click)="printPage()">Print</button>
+  <button class="button export" (click)="exportToJson()">Save</button>
   <input
     type="file"
     (change)="importJson($event)"
     style="display: none"
     #fileInput
   />
-  <button class="button export" (click)="fileInput.click()">Import</button>
-  <button class="button edit" (click)="increaseFontSize()">Font +</button>
-  <button class="button edit" (click)="decreaseFontSize()">Font -</button>
+  <button class="button export" (click)="fileInput.click()">Open</button>
   <button class="invisible"></button>
   <button class="invisible"></button>
 </div>
 <h1 class="fileName">{{ fileName }}</h1>
+<div class="editPanel">
+  <!-- Text Formatting Buttons -->
+  <button (click)="underlineText()" class="toolbar-button">
+    <u>Underline</u>
+  </button>
+  <button (click)="boldText()" class="toolbar-button">
+    <b>Bold</b>
+  </button>
+
+  <!-- Background Color Buttons -->
+  <!-- <div class="color-section">
+    <span>Background Color:</span>
+    <button (click)="changeBackgroundColor('red')" class="toolbar-button red">
+      Red
+    </button>
+    <button (click)="changeBackgroundColor('blue')" class="toolbar-button blue">
+      Blue
+    </button>
+    <button (click)="changeBackgroundColor('green')" class="toolbar-button green">
+      Green
+    </button>
+    <button (click)="changeBackgroundColor('yellow')" class="toolbar-button yellow">
+      Yellow
+    </button>
+    <button (click)="changeBackgroundColor('white')" class="toolbar-button">
+      White
+    </button>
+  </div> -->
+
+  <!-- Font Color Buttons -->
+  <div class="color-section font">
+    <span class="font-label">Font Color:</span>
+    <button (click)="changeFontColor('red')" class="toolbar-button red">
+      Red
+    </button>
+    <button (click)="changeFontColor('blue')" class="toolbar-button blue">
+      Blue
+    </button>
+    <button (click)="changeFontColor('black')" class="toolbar-button">
+      Black
+    </button>
+  </div>
+  <button class="toolbar-button" (click)="insertHorizontalLine()">Horizontal Line</button>
+
+  <div class="flex-spacer"></div>
+
+  <!-- Font Size Buttons -->
+  <button (click)="increaseFontSize()" class="toolbar-button">A+</button>
+  <button (click)="decreaseFontSize()" class="toolbar-button">A-</button>
+</div>
 
 <div class="wrapper">
   <div class="top_part">
@@ -33,7 +82,6 @@
         <div class="izveduvac">
           <input matInput [(ngModel)]="izveduvacInputValue" />
           <!-- <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2> -->
-          <!-- <h2 class="izveduvacTitle">ПРОФИНГ АРТ ДООЕЛ</h2> -->
         </div>
       </div>
       <div class="column datum">
@@ -49,8 +97,6 @@
     </div>
     <div class="row">
       <div class="pozicija">
-        <!-- <button (click)="increasePozicijaFontSize()">+</button>
-        <button (click)="decreasePozicijaFontSize()">-</button> -->
         <textarea
           cdkTextareaAutosize
           [(ngModel)]="pozicijaInputValue"
@@ -66,7 +112,6 @@
         <input matInput [(ngModel)]="cenaInputValue" />
       </div>
     </div>
-    <!-- <button class="new-row-button" (click)="addNewRow()">New Row</button> -->
     <table class="mainTable">
       <thead>
         <tr class="headerRow">
@@ -79,7 +124,6 @@
             ></textarea>
           </th>
           <th class="tKolicina">количина</th>
-          <!-- <th class="tMerka">мерка</th> -->
           <th class="tCena">цена</th>
           <th class="tVkupno">вкупно</th>
         </tr>
@@ -87,66 +131,46 @@
       <tbody>
         <tr *ngFor="let row of tableData; let i = index">
           <td>
-            <textarea
-              #textareaElement
-              cdkTextareaAutosize
+            <div
+              contenteditable="true"
               [(ngModel)]="row.redenBrojArea"
-              class="redenBrojArea"
+              class="editableDiv redenBrojArea"
               [style.font-size.px]="fontSize"
-              (keydown)="handleKeydown($event, i, 'redenBrojArea')"
-            ></textarea>
+              id="editableDiv"
+            ></div>
           </td>
           <td>
-            <textarea
-              #textareaElement
-              cdkTextareaAutosize
+            <div
+              contenteditable="true"
               [(ngModel)]="row.textAreaInput"
-              class="textArea"
+              class="editableDiv textArea"
               [style.font-size.px]="fontSize"
-              (keydown)="handleKeydown($event, i, 'textAreaInput')"
-            ></textarea>
+            ></div>
           </td>
           <td>
-            <textarea
-              #textareaElement
-              cdkTextareaAutosize
+            <div
+              contenteditable="true"
               [(ngModel)]="row.kolicinaArea"
-              class="kolicinaArea"
+              class="editableDiv kolicinaArea"
               [style.font-size.px]="fontSize"
-              (keydown)="handleKeydown($event, i, 'kolicinaArea')"
-            ></textarea>
+            ></div>
           </td>
-          <!-- <td>
-            <textarea
-              cdkTextareaAutosize
-              [(ngModel)]="row.merkaArea"
-              class="merkaArea"
-              [style.font-size.px]="fontSize"
-            ></textarea>
-          </td> -->
           <td>
-            <textarea
-              #textareaElement
-              cdkTextareaAutosize
+            <div
+              contenteditable="true"
               [(ngModel)]="row.cenaArea"
-              class="cenaArea"
+              class="editableDiv cenaArea"
               [style.font-size.px]="fontSize"
-              (keydown)="handleKeydown($event, i, 'cenaArea')"
-            ></textarea>
+            ></div>
           </td>
           <td>
-            <textarea
-              #textareaElement
-              cdkTextareaAutosize
+            <div
+              contenteditable="true"
               [(ngModel)]="row.vkupnoArea"
-              class="vkupnoArea"
+              class="editableDiv vkupnoArea"
               [style.font-size.px]="fontSize"
-              (keydown)="handleKeydown($event, i, 'vkupnoArea')"
-            ></textarea>
+            ></div>
           </td>
-          <!-- <button (click)="removeRow(i)" mat-icon-button class="delete-button">
-            <mat-icon>delete</mat-icon>
-          </button> -->
         </tr>
       </tbody>
     </table>

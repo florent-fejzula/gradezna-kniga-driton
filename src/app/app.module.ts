@@ -10,9 +10,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { FileSaveDialogComponent } from './file-save-dialog/file-save-dialog.component';
+import { ContenteditableValueAccessorDirective } from './contenteditable-value-accessor.directive';
 
 @NgModule({
-  declarations: [AppComponent, FileSaveDialogComponent],
+  declarations: [AppComponent, FileSaveDialogComponent, ContenteditableValueAccessorDirective],
   imports: [
     BrowserModule,
     NoopAnimationsModule,

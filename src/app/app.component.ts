@@ -1,4 +1,11 @@
-import { AfterViewInit, Component, ElementRef, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
 import { ExportService } from './export.service';
 import { FileSaveDialogComponent } from './file-save-dialog/file-save-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +24,8 @@ interface TableRow {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent implements AfterViewInit {
+export class AppComponent {
+  @ViewChildren('editableDiv') editableDivs!: QueryList<ElementRef>;
   @ViewChildren('textareaElement') textareaElements!: QueryList<ElementRef>;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
   fileName: string = '';
@@ -39,10 +47,12 @@ export class AppComponent implements AfterViewInit {
 
   fontSize: number = 16;
   fontSizePozicija: number = 20;
+  div4InputValue: string = '';
+  isDiv4InputDisabled: boolean = true;
 
   tableData: TableRow[] = [
     {
-      redenBrojArea: '1',
+      redenBrojArea: '',
       textAreaInput: '',
       kolicinaArea: '',
       merkaArea: '',
@@ -51,14 +61,11 @@ export class AppComponent implements AfterViewInit {
     },
   ];
 
-  div4InputValue: string = '';
-  isDiv4InputDisabled: boolean = true;
-
-  constructor(private exportService: ExportService, public dialog: MatDialog) {}
-
-  ngAfterViewInit() {
-    this.syncTextareaHeight();
-  }
+  constructor(
+    private exportService: ExportService,
+    public dialog: MatDialog,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   increaseFontSize() {
     this.fontSize += 1;
@@ -74,6 +81,61 @@ export class AppComponent implements AfterViewInit {
 
   decreasePozicijaFontSize() {
     this.fontSizePozicija = Math.max(10, this.fontSizePozicija - 1);
+  }
+  
+  underlineText(): void {
+    document.execCommand('underline');
+    this.applyCustomUnderline();
+  }
+  
+  applyCustomUnderline(): void {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const elements = range.commonAncestorContainer.parentElement?.querySelectorAll('u');
+      elements?.forEach((element: HTMLElement) => {
+        element.style.textDecoration = 'none'; // Remove default underline
+        element.style.borderBottom = '2px solid currentColor'; // Add custom underline
+        element.style.paddingBottom = '20px'; // Adjust padding to move underline down
+      });
+    }
+  }
+
+  insertHorizontalLine() {
+    const selection = window.getSelection();
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const commonAncestor = range.commonAncestorContainer;
+
+      let editableDiv: Element | null = null;
+      if (commonAncestor.nodeType === Node.ELEMENT_NODE) {
+        editableDiv = (commonAncestor as Element).closest('.editableDiv');
+      } else if (commonAncestor.parentElement) {
+        editableDiv = commonAncestor.parentElement.closest('.editableDiv');
+      }
+
+      if (editableDiv) {
+        const hr = document.createElement('hr');
+        hr.style.marginBlockStart = '1px';
+        hr.style.marginBlockEnd = '1px';
+        hr.style.borderColor = 'black';
+        range.deleteContents();
+        range.insertNode(hr);
+      }
+    }
+  }
+
+  // underlineText(): void {
+  //   document.execCommand('underline', false, '');
+  // }
+
+  boldText() {
+    document.execCommand('bold');
+  }
+
+  changeFontColor(color: string): void {
+    document.execCommand('styleWithCSS', false, 'true');
+    document.execCommand('foreColor', false, color);
   }
 
   async importFile() {
@@ -104,7 +166,7 @@ export class AppComponent implements AfterViewInit {
       gradezhnaKnigaInput: this.gradezhnaKnigaInput,
       izveduvacInputValue: this.izveduvacInputValue,
       tableTitleInputValue: this.tableTitleInputValue,
-      tableData: this.tableData,
+      tableData: this.tableData.map((row) => ({ ...row })),
       div4InputValue: this.div4InputValue,
       preVkupnoInputValue: this.preVkupnoInputValue,
     };
@@ -120,20 +182,13 @@ export class AppComponent implements AfterViewInit {
         this.exportService.exportToJsonFile(dataToExport, this.exportFileName);
       }
     });
-
-    // Prompt the user for the file name
-    // const userInput = prompt('Enter the file name:', this.exportFileName);
-    // if (userInput !== null && userInput.trim() !== '') {
-    //   this.exportFileName = userInput.trim();
-    //   this.exportService.exportToJsonFile(dataToExport, this.exportFileName);
-    // }
   }
 
   importJson(event: Event): void {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.fileName = file.name; // Set the file name to display
+      this.fileName = file.name;
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -154,82 +209,47 @@ export class AppComponent implements AfterViewInit {
         this.tableData = importedData.tableData;
         this.div4InputValue = importedData.div4InputValue;
         this.preVkupnoInputValue = importedData.preVkupnoInputValue;
+        this.cdr.detectChanges();
       };
 
       reader.readAsText(file);
     }
+    this.cdr.detectChanges();
   }
 
-  handleKeydown(event: KeyboardEvent, rowIndex: number, columnName: string): void {
-    if (event.key === 'Enter') {
-      event.preventDefault(); // Prevent default Enter key behavior
-
-      // Update all textareas in the same row with a new line
-      this.tableData.forEach((row, index) => {
-        if (index === rowIndex) {
-          row.redenBrojArea += '\n';
-          row.textAreaInput += '\n';
-          row.kolicinaArea += '\n';
-          row.cenaArea += '\n';
-          row.vkupnoArea += '\n';
+  saveAsPDF() {
+    if ((window as any).electron && (window as any).electron.saveAsPDF) {
+      (window as any).electron.saveAsPDF({}).then((result: any) => {
+        if (result.success) {
+          console.log('PDF saved to:', result.path);
+        } else {
+          console.error('Failed to save PDF:', result.error);
         }
+      }).catch((error: any) => {
+        console.error('Error during save as PDF:', error);
       });
-
-      // Update the view
-      this.syncTextareaHeight();
+    } else {
+      console.error('saveAsPDF function is not available');
     }
   }
 
-  syncTextareaHeight(): void {
-    setTimeout(() => {
-      const heights = this.textareaElements.map(element => element.nativeElement.scrollHeight);
-      const maxHeight = Math.max(...heights);
-
-      this.textareaElements.forEach(element => {
-        element.nativeElement.style.height = `${maxHeight}px`;
+  printPage() {
+    if ((window as any).electron && (window as any).electron.printPage) {
+      (window as any).electron.printPage().then((result: any) => {
+        if (result.success) {
+          console.log('Print job started');
+        } else {
+          console.error('Failed to start print job:', result.error);
+        }
+      }).catch((error: any) => {
+        console.error('Error during print:', error);
       });
-    });
+    } else {
+      console.error('printPage function is not available');
+    }
   }
 
-  addNewRow() {
-    const nextRedenBroj = this.tableData.length + 1;
-    this.tableData.push({
-      redenBrojArea: nextRedenBroj.toString(),
-      textAreaInput: '',
-      kolicinaArea: '',
-      merkaArea: '',
-      cenaArea: '',
-      vkupnoArea: '',
-    });
-    // this.calculateDiv4InputValue();
-  }
-
-  // calculateVkupnoArea(row: TableRow) {
-  //   const kolicina = parseFloat(row.kolicinaArea);
-  //   const cena = parseFloat(row.cenaArea);
-  //   if (!isNaN(kolicina) && !isNaN(cena)) {
-  //     row.vkupnoArea = (kolicina * cena).toFixed(2);
-  //   } else {
-  //     row.vkupnoArea = '';
-  //   }
-  //   // this.calculateDiv4InputValue();
+  // printPage() {
+  //   window.print();
   // }
-
-  // calculateDiv4InputValue() {
-  //   const total = this.tableData.reduce((total, row) => {
-  //     return total + (parseFloat(row.vkupnoArea) || 0);
-  //   }, 0);
-
-  //   const formattedTotal = total.toFixed(2) + '.00';
-
-  //   this.div4InputValue = parseFloat(formattedTotal);
-  // }
-
-  removeRow(index: number) {
-    this.tableData.splice(index, 1);
-  }
-
-  printThisPage() {
-    window.print();
-  }
 }
