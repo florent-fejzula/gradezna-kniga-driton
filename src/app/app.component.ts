@@ -1,7 +1,9 @@
 import {
+  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
+  HostListener,
   QueryList,
   ViewChild,
   ViewChildren,
@@ -24,10 +26,16 @@ interface TableRow {
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements AfterViewInit {
   @ViewChildren('editableDiv') editableDivs!: QueryList<ElementRef>;
   @ViewChildren('textareaElement') textareaElements!: QueryList<ElementRef>;
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: any) {
+    this.adjustTableBodyHeight();
+  }
+
   fileName: string = '';
 
   gradbaBroj: string = '';
@@ -45,7 +53,7 @@ export class AppComponent {
   cenaInputValue: number | undefined;
   exportFileName: string = 'exported-data.json'; // Default file name
 
-  fontSize: number = 16;
+  fontSize: number = 20;
   fontSizePozicija: number = 20;
   div4InputValue: string = '';
   isDiv4InputDisabled: boolean = true;
@@ -67,6 +75,10 @@ export class AppComponent {
     private cdr: ChangeDetectorRef
   ) {}
 
+  ngAfterViewInit() {
+    this.adjustTableBodyHeight();
+  }
+
   increaseFontSize() {
     this.fontSize += 1;
   }
@@ -82,17 +94,18 @@ export class AppComponent {
   decreasePozicijaFontSize() {
     this.fontSizePozicija = Math.max(10, this.fontSizePozicija - 1);
   }
-  
+
   underlineText(): void {
     document.execCommand('underline');
     this.applyCustomUnderline();
   }
-  
+
   applyCustomUnderline(): void {
     const selection = window.getSelection();
     if (selection && selection.rangeCount > 0) {
       const range = selection.getRangeAt(0);
-      const elements = range.commonAncestorContainer.parentElement?.querySelectorAll('u');
+      const elements =
+        range.commonAncestorContainer.parentElement?.querySelectorAll('u');
       elements?.forEach((element: HTMLElement) => {
         element.style.textDecoration = 'none'; // Remove default underline
         element.style.borderBottom = '2px solid currentColor'; // Add custom underline
@@ -128,6 +141,19 @@ export class AppComponent {
   // underlineText(): void {
   //   document.execCommand('underline', false, '');
   // }
+
+  adjustTableBodyHeight() {
+    const wrapper = document.querySelector('.wrapper') as HTMLElement;
+    const topPart = document.querySelector('.top_part') as HTMLElement;
+    const bottomPart = document.querySelector('.bottom_part') as HTMLElement;
+    const tbody = document.querySelector('.mainTable tbody') as HTMLElement;
+
+    if (wrapper && topPart && bottomPart && tbody) {
+      const availableHeight =
+        wrapper.clientHeight - topPart.clientHeight - bottomPart.clientHeight;
+      tbody.style.maxHeight = `${availableHeight}px`;
+    }
+  }
 
   boldText() {
     document.execCommand('bold');
@@ -169,6 +195,7 @@ export class AppComponent {
       tableData: this.tableData.map((row) => ({ ...row })),
       div4InputValue: this.div4InputValue,
       preVkupnoInputValue: this.preVkupnoInputValue,
+      fontSize: this.fontSize,
     };
 
     const dialogRef = this.dialog.open(FileSaveDialogComponent, {
@@ -209,6 +236,7 @@ export class AppComponent {
         this.tableData = importedData.tableData;
         this.div4InputValue = importedData.div4InputValue;
         this.preVkupnoInputValue = importedData.preVkupnoInputValue;
+        this.fontSize = importedData.fontSize || 16;
         this.cdr.detectChanges();
       };
 
@@ -219,37 +247,43 @@ export class AppComponent {
 
   saveAsPDF() {
     if ((window as any).electron && (window as any).electron.saveAsPDF) {
-      (window as any).electron.saveAsPDF({}).then((result: any) => {
-        if (result.success) {
-          console.log('PDF saved to:', result.path);
-        } else {
-          console.error('Failed to save PDF:', result.error);
-        }
-      }).catch((error: any) => {
-        console.error('Error during save as PDF:', error);
-      });
+      (window as any).electron
+        .saveAsPDF({})
+        .then((result: any) => {
+          if (result.success) {
+            console.log('PDF saved to:', result.path);
+          } else {
+            console.error('Failed to save PDF:', result.error);
+          }
+        })
+        .catch((error: any) => {
+          console.error('Error during save as PDF:', error);
+        });
     } else {
       console.error('saveAsPDF function is not available');
     }
   }
 
-  printPage() {
-    if ((window as any).electron && (window as any).electron.printPage) {
-      (window as any).electron.printPage().then((result: any) => {
-        if (result.success) {
-          console.log('Print job started');
-        } else {
-          console.error('Failed to start print job:', result.error);
-        }
-      }).catch((error: any) => {
-        console.error('Error during print:', error);
-      });
-    } else {
-      console.error('printPage function is not available');
-    }
-  }
-
   // printPage() {
-  //   window.print();
+  //   if ((window as any).electron && (window as any).electron.printPage) {
+  //     (window as any).electron
+  //       .printPage()
+  //       .then((result: any) => {
+  //         if (result.success) {
+  //           console.log('Print job started');
+  //         } else {
+  //           console.error('Failed to start print job:', result.error);
+  //         }
+  //       })
+  //       .catch((error: any) => {
+  //         console.error('Error during print:', error);
+  //       });
+  //   } else {
+  //     console.error('printPage function is not available');
+  //   }
   // }
+
+  printPage() {
+    window.print();
+  }
 }

@@ -54,6 +54,12 @@
   }
 }
 
+.font-size-label {
+  font-size: 14px;
+  font-family: Arial, sans-serif;
+  margin-right: 24px; /* Adds space between the label and the buttons */
+}
+
 .fileName {
   margin: auto;
   width: 960px;
@@ -139,6 +145,7 @@
 
 .editableDiv {
   border: 1px solid #ccc; /* Always show border */
+  font-size: 21px;
   padding: 2px;
   min-height: 20px; /* Ensure there's some minimum height */
   transition: border-color 0.3s;
@@ -153,33 +160,7 @@
 hr {
   margin-block-start: 1px !important; /* Reducing the top margin */
   margin-block-end: 1px !important; /* Reducing the bottom margin */
-  // margin-block: 1px !important;
-  // border-bottom-width: 2px !important;
-  // border-left-width: 2px !important;
-  // font-size: 50px !important;
-  // -webkit-border-horizontal-spacing: 27px !important;
-  // height: 2px !important;
-  // color: black !important;
   border-color: black !important;
-}
-
-.new-row-button {
-  background-color: #4caf50;
-  border: none;
-  color: white;
-  width: 160px;
-  padding: 10px 20px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.new-row-button:hover {
-  background-color: #45a049;
 }
 
 .wrapper {
@@ -210,17 +191,19 @@ hr {
 }
 
 .gradbaBroj {
-  padding-top: 8px;
+  padding-top: 7px;
   text-align: center;
   font-size: 20px;
   width: 238px;
 }
 
 .gradbaBrojInput {
-  width: 180px;
-  height: 66px;
-  font-size: 20px;
+  font-family: Arial, Helvetica, sans-serif;
+  width: 200px;
+  height: 66px !important;
+  font-size: 24px;
   text-align: center;
+  font-weight: bold;
 }
 
 .kniga {
@@ -275,11 +258,12 @@ hr {
 
   input {
     width: 444px;
-    font-size: 20px;
+    font-size: 22px;
     margin-left: 6px;
     margin-top: 1px;
     height: 33px;
     text-align: center;
+    font-weight: bold;
   }
 }
 
@@ -353,9 +337,10 @@ hr {
 
   input {
     width: 104px;
-    font-size: 20px;
+    font-size: 22px;
     height: 24px;
     text-align: center;
+    font-weight: bold;
   }
 }
 
@@ -390,9 +375,13 @@ table {
   width: 100%;
   border-collapse: collapse;
 
+  tbody {
+    height: 981px;
+  }
+
   th {
     border: 1px solid black;
-    padding: 6px;
+    padding: 0px 7px;
     text-align: center;
   }
 
@@ -400,7 +389,7 @@ table {
     padding: 6px;
     text-align: center;
     border-right: 1px solid black;
-    border-bottom: 1px solid black;
+    border-bottom: none;
     page-break-inside: avoid;
     vertical-align: top;
   }
@@ -420,7 +409,6 @@ table {
     overflow-y: hidden;
     min-height: 40px;
     page-break-inside: avoid;
-    padding-bottom: 10px;
     font-weight: bold;
   }
 }
@@ -456,7 +444,7 @@ table {
 
   input {
     height: 30px;
-    font-size: 18px;
+    font-size: 22px;
     font-weight: bold;
     margin: 4px 4px;
     width: 116px;

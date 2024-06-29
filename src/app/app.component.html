@@ -22,26 +22,6 @@
     <b>Bold</b>
   </button>
 
-  <!-- Background Color Buttons -->
-  <!-- <div class="color-section">
-    <span>Background Color:</span>
-    <button (click)="changeBackgroundColor('red')" class="toolbar-button red">
-      Red
-    </button>
-    <button (click)="changeBackgroundColor('blue')" class="toolbar-button blue">
-      Blue
-    </button>
-    <button (click)="changeBackgroundColor('green')" class="toolbar-button green">
-      Green
-    </button>
-    <button (click)="changeBackgroundColor('yellow')" class="toolbar-button yellow">
-      Yellow
-    </button>
-    <button (click)="changeBackgroundColor('white')" class="toolbar-button">
-      White
-    </button>
-  </div> -->
-
   <!-- Font Color Buttons -->
   <div class="color-section font">
     <span class="font-label">Font Color:</span>
@@ -55,11 +35,13 @@
       Black
     </button>
   </div>
-  <button class="toolbar-button" (click)="insertHorizontalLine()">Horizontal Line</button>
+  <button class="toolbar-button" (click)="insertHorizontalLine()">
+    Horizontal Line
+  </button>
 
   <div class="flex-spacer"></div>
 
-  <!-- Font Size Buttons -->
+  <span class="font-size-label">Font Size: {{ fontSize }}</span>
   <button (click)="increaseFontSize()" class="toolbar-button">A+</button>
   <button (click)="decreaseFontSize()" class="toolbar-button">A-</button>
 </div>
@@ -68,12 +50,11 @@
   <div class="top_part">
     <div class="row">
       <div class="column gradbaBroj">
-        <b
-          ><input
-            class="gradbaBrojInput"
-            matInput
-            [(ngModel)]="gradezhnaKnigaInput"
-        /></b>
+        <textarea
+          cdkTextareaAutosize
+          class="gradbaBrojInput"
+          [(ngModel)]="gradezhnaKnigaInput"
+        ></textarea>
       </div>
       <div class="column wide">
         <div class="gradba">
@@ -135,8 +116,9 @@
               contenteditable="true"
               [(ngModel)]="row.redenBrojArea"
               class="editableDiv redenBrojArea"
-              [style.font-size.px]="fontSize"
+              [ngStyle]="{ 'font-size.px': fontSize }"
               id="editableDiv"
+              spellcheck="false"
             ></div>
           </td>
           <td>
@@ -145,6 +127,7 @@
               [(ngModel)]="row.textAreaInput"
               class="editableDiv textArea"
               [style.font-size.px]="fontSize"
+              spellcheck="false"
             ></div>
           </td>
           <td>
@@ -153,6 +136,7 @@
               [(ngModel)]="row.kolicinaArea"
               class="editableDiv kolicinaArea"
               [style.font-size.px]="fontSize"
+              spellcheck="false"
             ></div>
           </td>
           <td>
@@ -161,6 +145,7 @@
               [(ngModel)]="row.cenaArea"
               class="editableDiv cenaArea"
               [style.font-size.px]="fontSize"
+              spellcheck="false"
             ></div>
           </td>
           <td>
@@ -169,6 +154,7 @@
               [(ngModel)]="row.vkupnoArea"
               class="editableDiv vkupnoArea"
               [style.font-size.px]="fontSize"
+              spellcheck="false"
             ></div>
           </td>
         </tr>
