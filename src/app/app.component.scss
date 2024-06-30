@@ -165,13 +165,14 @@ hr {
 }
 
 .printSizeLabel {
-  border: 2px solid red;
+  border-top: 2px solid red;
+  border-bottom: 2px solid red;
   position: absolute;
   top: 201px;
   left: 278px;
   z-index: -1;
   width: 960px;
-  height: 1394px;
+  height: 1266px;
   margin: auto;
 }
 
@@ -388,7 +389,7 @@ table {
   border-collapse: collapse;
 
   tbody {
-    height: 1108px;
+    height: 980px;
   }
 
   th {
