@@ -33,7 +33,7 @@ export class AppComponent implements AfterViewInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
-    this.adjustTableBodyHeight();
+    this.applyTableBodyHeight();
   }
 
   fileName: string = '';
@@ -76,7 +76,7 @@ export class AppComponent implements AfterViewInit {
   ) {}
 
   ngAfterViewInit() {
-    this.adjustTableBodyHeight();
+    this.applyTableBodyHeight();
   }
 
   increaseFontSize() {
@@ -142,16 +142,14 @@ export class AppComponent implements AfterViewInit {
   //   document.execCommand('underline', false, '');
   // }
 
-  adjustTableBodyHeight() {
-    const wrapper = document.querySelector('.wrapper') as HTMLElement;
+  applyTableBodyHeight() {
+    const mainTableWrapper = document.querySelector('.mainTable-wrapper') as HTMLElement;
     const topPart = document.querySelector('.top_part') as HTMLElement;
     const bottomPart = document.querySelector('.bottom_part') as HTMLElement;
-    const tbody = document.querySelector('.mainTable tbody') as HTMLElement;
-
-    if (wrapper && topPart && bottomPart && tbody) {
-      const availableHeight =
-        wrapper.clientHeight - topPart.clientHeight - bottomPart.clientHeight;
-      tbody.style.maxHeight = `${availableHeight}px`;
+  
+    if (mainTableWrapper && topPart && bottomPart) {
+      const availableHeight = window.innerHeight - topPart.clientHeight - bottomPart.clientHeight;
+      mainTableWrapper.style.maxHeight = `${availableHeight}px`;
     }
   }
 

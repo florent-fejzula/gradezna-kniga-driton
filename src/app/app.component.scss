@@ -63,6 +63,7 @@
 .fileName {
   margin: auto;
   width: 960px;
+  height: 32px;
   margin-bottom: 8px;
 }
 
@@ -163,11 +164,22 @@ hr {
   border-color: black !important;
 }
 
+.printSizeLabel {
+  border: 2px solid red;
+  position: absolute;
+  top: 201px;
+  left: 278px;
+  z-index: -1;
+  width: 960px;
+  height: 1394px;
+  margin: auto;
+}
+
 .wrapper {
   border: 1px solid #000;
   box-sizing: border-box;
   overflow: hidden;
-  min-height: 100vh;
+  // min-height: 100vh;
   margin: auto;
   width: 960px;
   display: flex;
@@ -376,7 +388,7 @@ table {
   border-collapse: collapse;
 
   tbody {
-    height: 981px;
+    height: 1108px;
   }
 
   th {
@@ -505,7 +517,8 @@ textarea[disabled] {
   .pageEnd,
   .add-button,
   .new-row-button,
-  .delete-button {
+  .delete-button,
+  .printSizeLabel {
     display: none;
   }
 

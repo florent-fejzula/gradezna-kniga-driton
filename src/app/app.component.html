@@ -41,11 +41,12 @@
 
   <div class="flex-spacer"></div>
 
-  <span class="font-size-label">Font Size: {{ fontSize }}</span>
+  <!-- Font Size Buttons -->
   <button (click)="increaseFontSize()" class="toolbar-button">A+</button>
   <button (click)="decreaseFontSize()" class="toolbar-button">A-</button>
 </div>
 
+<div class="printSizeLabel"></div>
 <div class="wrapper">
   <div class="top_part">
     <div class="row">
@@ -116,7 +117,7 @@
               contenteditable="true"
               [(ngModel)]="row.redenBrojArea"
               class="editableDiv redenBrojArea"
-              [ngStyle]="{ 'font-size.px': fontSize }"
+              [style.font-size.px]="fontSize"
               id="editableDiv"
               spellcheck="false"
             ></div>
