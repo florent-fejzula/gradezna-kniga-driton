@@ -1,4 +1,4 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const { app, BrowserWindow, Menu, ipcMain, dialog } = require('electron');
 const path = require('path');
 const fs = require('fs');
 
@@ -18,6 +18,22 @@ function createWindow() {
 
   // Load the index.html file from the Angular build output
   appWindow.loadFile(path.join(__dirname, 'dist/gradezhna-kniga/index.html'));
+
+  appWindow.webContents.on('context-menu', (event, params) => {
+    const contextMenu = Menu.buildFromTemplate([
+      {
+        label: 'Copy',
+        role: 'copy',
+        enabled: params.editFlags.canCopy
+      },
+      {
+        label: 'Paste',
+        role: 'paste',
+        enabled: params.editFlags.canPaste
+      }
+    ]);
+    contextMenu.popup(appWindow);
+  });
 
   appWindow.on('closed', function () {
     appWindow = null;
