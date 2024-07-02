@@ -50,20 +50,14 @@
 <div class="wrapper">
   <div class="top_part">
     <div class="row">
-      <div class="column gradbaBroj">
-        <textarea
-          cdkTextareaAutosize
-          class="gradbaBrojInput"
-          [(ngModel)]="gradezhnaKnigaInput"
-        ></textarea>
-      </div>
+      <div class="column gradbaBroj">ГРАДЕЖНА КНИГА</div>
       <div class="column wide">
         <div class="gradba">
-          <input matInput [(ngModel)]="gradbaInputValue" />
+          градба: <input matInput [(ngModel)]="gradbaInputValue" />
         </div>
         <div class="izveduvac">
-          <input matInput [(ngModel)]="izveduvacInputValue" />
-          <!-- <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2> -->
+          <span>изведувач:</span>
+          <h2 class="izveduvacTitle">ТИЛ КЕРАМИК 2014 ДООЕЛ</h2>
         </div>
       </div>
       <div class="column datum">
@@ -78,7 +72,16 @@
       </div>
     </div>
     <div class="row">
+      <div class="newRowLabel">инвестор</div>
+      <div class="newRowInput"><input matInput [(ngModel)]="investorInputValue" class="newRowTextInput" /></div>
+    </div>
+    <div class="row">
+      <div class="newRowLabel">адреса и назив на градилиште</div>
+      <div class="newRowInput"><input matInput [(ngModel)]="adresaInputValue" class="newRowTextInput" /></div>
+    </div>
+    <div class="row">
       <div class="pozicija">
+        <div class="gradeznaPozicija">ГРАДЕЖНА ПОЗИЦИЈА:</div>
         <textarea
           cdkTextareaAutosize
           [(ngModel)]="pozicijaInputValue"
@@ -106,6 +109,7 @@
             ></textarea>
           </th>
           <th class="tKolicina">количина</th>
+          <th class="tmerka">мерка</th>
           <th class="tCena">цена</th>
           <th class="tVkupno">вкупно</th>
         </tr>
@@ -143,6 +147,15 @@
           <td>
             <div
               contenteditable="true"
+              [(ngModel)]="row.merkaArea"
+              class="editableDiv merkaArea"
+              [style.font-size.px]="fontSize"
+              spellcheck="false"
+            ></div>
+          </td>
+          <td>
+            <div
+              contenteditable="true"
               [(ngModel)]="row.cenaArea"
               class="editableDiv cenaArea"
               [style.font-size.px]="fontSize"
@@ -164,21 +177,21 @@
   </div>
   <div class="bottom_part">
     <div class="prenos">
-      <div class="div0">
-        <input
-          matInput
-          [(ngModel)]="preVkupnoInputValue"
-          class="preVkupnoInputValue"
-        />
+      
+      <div class="div1">за пренос / вкупно =</div>
+      <div class="div2">
+        <input matInput [(ngModel)]="div2InputValue" />
       </div>
-      <div class="div1">вкупно =</div>
+      <div class="div3">
+        <input matInput [(ngModel)]="div3InputValue" />
+      </div>
       <div class="div4">
         <input matInput [(ngModel)]="div4InputValue" />
       </div>
     </div>
 
     <div class="fullBottom">
-      <div class="fullBottomIzveduvac">изведувач: Дритон Шерифи</div>
+      <div class="fullBottomIzveduvac">изведувач:</div>
       <div class="fullBottomInzener">надзорниот инженер</div>
     </div>
   </div>

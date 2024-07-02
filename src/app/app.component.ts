@@ -55,6 +55,8 @@ export class AppComponent implements AfterViewInit {
 
   fontSize: number = 20;
   fontSizePozicija: number = 20;
+  div2InputValue: string = '';
+  div3InputValue: string = '';
   div4InputValue: string = '';
   isDiv4InputDisabled: boolean = true;
 
@@ -138,17 +140,24 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  // underlineText(): void {
-  //   document.execCommand('underline', false, '');
-  // }
+  @HostListener('document:keydown', ['$event'])
+  handleKeyboardEvent(event: KeyboardEvent) {
+    if (event.ctrlKey && event.key === ' ') {
+      event.preventDefault();
+      this.insertHorizontalLine();
+    }
+  }
 
   applyTableBodyHeight() {
-    const mainTableWrapper = document.querySelector('.mainTable-wrapper') as HTMLElement;
+    const mainTableWrapper = document.querySelector(
+      '.mainTable-wrapper'
+    ) as HTMLElement;
     const topPart = document.querySelector('.top_part') as HTMLElement;
     const bottomPart = document.querySelector('.bottom_part') as HTMLElement;
-  
+
     if (mainTableWrapper && topPart && bottomPart) {
-      const availableHeight = window.innerHeight - topPart.clientHeight - bottomPart.clientHeight;
+      const availableHeight =
+        window.innerHeight - topPart.clientHeight - bottomPart.clientHeight;
       mainTableWrapper.style.maxHeight = `${availableHeight}px`;
     }
   }
@@ -160,20 +169,6 @@ export class AppComponent implements AfterViewInit {
   changeFontColor(color: string): void {
     document.execCommand('styleWithCSS', false, 'true');
     document.execCommand('foreColor', false, color);
-  }
-
-  async importFile() {
-    // @ts-ignore: electron is exposed in preload script
-    const result = await window.electron.showOpenDialog();
-    if (!result.canceled && result.filePath) {
-      const filePath = result.filePath;
-      this.fileName = this.extractFileName(filePath);
-      // You can also load and process the file content here if needed
-    }
-  }
-
-  extractFileName(filePath: string): string {
-    return filePath.split('\\').pop()?.split('/').pop() ?? 'unknown';
   }
 
   exportToJson(): void {
@@ -191,6 +186,8 @@ export class AppComponent implements AfterViewInit {
       izveduvacInputValue: this.izveduvacInputValue,
       tableTitleInputValue: this.tableTitleInputValue,
       tableData: this.tableData.map((row) => ({ ...row })),
+      div2InputValue: this.div2InputValue,
+      div3InputValue: this.div3InputValue,
       div4InputValue: this.div4InputValue,
       preVkupnoInputValue: this.preVkupnoInputValue,
       fontSize: this.fontSize,
@@ -213,7 +210,7 @@ export class AppComponent implements AfterViewInit {
     const input = event.target as HTMLInputElement;
     if (input.files && input.files.length > 0) {
       const file = input.files[0];
-      this.fileName = file.name;
+      this.fileName = (file as any).path || file.name;
 
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -232,12 +229,13 @@ export class AppComponent implements AfterViewInit {
         this.izveduvacInputValue = importedData.izveduvacInputValue;
         this.tableTitleInputValue = importedData.tableTitleInputValue;
         this.tableData = importedData.tableData;
+        this.div2InputValue = importedData.div2InputValue;
+        this.div3InputValue = importedData.div3InputValue;
         this.div4InputValue = importedData.div4InputValue;
         this.preVkupnoInputValue = importedData.preVkupnoInputValue;
         this.fontSize = importedData.fontSize || 16;
         this.cdr.detectChanges();
       };
-
       reader.readAsText(file);
     }
     this.cdr.detectChanges();
@@ -261,25 +259,6 @@ export class AppComponent implements AfterViewInit {
       console.error('saveAsPDF function is not available');
     }
   }
-
-  // printPage() {
-  //   if ((window as any).electron && (window as any).electron.printPage) {
-  //     (window as any).electron
-  //       .printPage()
-  //       .then((result: any) => {
-  //         if (result.success) {
-  //           console.log('Print job started');
-  //         } else {
-  //           console.error('Failed to start print job:', result.error);
-  //         }
-  //       })
-  //       .catch((error: any) => {
-  //         console.error('Error during print:', error);
-  //       });
-  //   } else {
-  //     console.error('printPage function is not available');
-  //   }
-  // }
 
   printPage() {
     window.print();
