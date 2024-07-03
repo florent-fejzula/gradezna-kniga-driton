@@ -216,24 +216,59 @@ export class AppComponent implements AfterViewInit {
       reader.onload = (e) => {
         const importedData = JSON.parse(reader.result as string);
 
-        this.gradbaBroj = importedData.gradbaBroj;
-        this.gradbaInputValue = importedData.gradbaInputValue;
-        this.knigaInputValue = importedData.knigaInputValue;
-        this.datumInputValue = importedData.datumInputValue;
-        this.merkaInputValue = importedData.merkaInputValue;
-        this.cenaInputValue = importedData.cenaInputValue;
-        this.investorInputValue = importedData.investorInputValue;
-        this.adresaInputValue = importedData.adresaInputValue;
-        this.pozicijaInputValue = importedData.pozicijaInputValue;
-        this.gradezhnaKnigaInput = importedData.gradezhnaKnigaInput;
-        this.izveduvacInputValue = importedData.izveduvacInputValue;
-        this.tableTitleInputValue = importedData.tableTitleInputValue;
-        this.tableData = importedData.tableData;
-        this.div2InputValue = importedData.div2InputValue;
-        this.div3InputValue = importedData.div3InputValue;
-        this.div4InputValue = importedData.div4InputValue;
-        this.preVkupnoInputValue = importedData.preVkupnoInputValue;
+        this.gradbaBroj = importedData.gradbaBroj || '';
+        this.gradbaInputValue = importedData.gradbaInputValue || '';
+        this.knigaInputValue = importedData.knigaInputValue || '';
+        this.datumInputValue = importedData.datumInputValue || '';
+        this.merkaInputValue = importedData.merkaInputValue || '';
+        this.cenaInputValue = importedData.cenaInputValue || '';
+        this.investorInputValue = importedData.investorInputValue || '';
+        this.adresaInputValue = importedData.adresaInputValue || '';
+        this.pozicijaInputValue = importedData.pozicijaInputValue || '';
+        this.gradezhnaKnigaInput = importedData.gradezhnaKnigaInput || '';
+        this.izveduvacInputValue = importedData.izveduvacInputValue || '';
+        this.tableTitleInputValue = importedData.tableTitleInputValue || '';
+        this.div2InputValue = importedData.div2InputValue || '';
+        this.div3InputValue = importedData.div3InputValue || '';
+        this.div4InputValue = importedData.div4InputValue || '';
+        this.preVkupnoInputValue = importedData.preVkupnoInputValue || '';
         this.fontSize = importedData.fontSize || 16;
+
+        if (importedData.tableData) {
+          this.tableData = importedData.tableData.map((row: any) => ({
+            redenBrojArea: row.redenBrojArea || '',
+            textAreaInput: row.textAreaInput || '',
+            kolicinaArea: row.kolicinaArea || '',
+            merkaArea: row.merkaArea || '',
+            cenaArea: row.cenaArea || '',
+            vkupnoArea: row.vkupnoArea || '',
+          }));
+        } else {
+          // For older JSON format without tableData field
+          this.tableData = [
+            {
+              redenBrojArea: this.convertNewlinesToBreaks(
+                importedData.redenBrojArea || ''
+              ),
+              textAreaInput: this.convertNewlinesToBreaks(
+                importedData.textAreaInput || ''
+              ),
+              kolicinaArea: this.convertNewlinesToBreaks(
+                importedData.kolicinaArea || ''
+              ),
+              merkaArea: this.convertNewlinesToBreaks(
+                importedData.merkaArea || ''
+              ),
+              cenaArea: this.convertNewlinesToBreaks(
+                importedData.cenaArea || ''
+              ),
+              vkupnoArea: this.convertNewlinesToBreaks(
+                importedData.vkupnoArea || ''
+              ),
+            },
+          ];
+        }
+
         this.cdr.detectChanges();
       };
       reader.readAsText(file);
@@ -258,6 +293,10 @@ export class AppComponent implements AfterViewInit {
     } else {
       console.error('saveAsPDF function is not available');
     }
+  }
+
+  convertNewlinesToBreaks(text: string): string {
+    return text.replace(/\n/g, '<br>');
   }
 
   printPage() {
